@@ -8,7 +8,7 @@ env:
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - gem install rake
-  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in service-account.json.enc -out service-account.json -d
+  - openssl aes-256-cbc -K $encrypted_0c35eebf403c_key -iv $encrypted_0c35eebf403c_iv -in ./tutorial/complex/service-account.json.enc -out service-account.json -d
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl
@@ -17,13 +17,13 @@ before_install:
   - gcloud config set compute/zone us-central1-a
   - gcloud container clusters get-credentials multi-cluster
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker build -t kkaushal09/react-test -f ./client/Dockerfile.dev ./client
+  - docker build -t kkaushal09/react-test -f ./tutorial/complex/client/Dockerfile.dev ./tutorial/complex/client
 
 script:
   - docker run kkaushal09/react-test npm test -- --coverage
 
 deploy:
   provider: script
-  script: bash ./deploy.sh
+  script: bash ./tutorial/complex/deploy.sh
   on:
     branch: master
